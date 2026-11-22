@@ -23,8 +23,13 @@ jobs:
           python -m pip install buildozer setuptools 'cython==0.29.34'
       - name: Test financial logic
         run: python -m unittest test_budget -v
+     
       - name: Build debug APK
-        run: buildozer -v android debug
+        run: |
+          echo "Checking Android build configuration"
+          grep -E '^android\.(api|minapi|ndk_api|archs)' buildozer.spec
+          buildozer -v android debug
+
       - uses: actions/upload-artifact@v4
         with:
           name: BudgetTracker-Android
